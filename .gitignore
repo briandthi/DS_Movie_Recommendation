@@ -1,0 +1,6 @@
+venv
+*.csv
+*.zip
+*.tsv.gz
+__pychache__
+*.pyc
