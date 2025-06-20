@@ -6,6 +6,10 @@ Ce projet est un système de recommandation de films qui combine une API FastAPI
 
 Le projet est organisé en plusieurs composants principaux :
 
+### Requirements
+
+- python < 3.13
+
 ### 1. Interface Utilisateur (Streamlit)
 
 - Fichier : `app.py`
@@ -41,18 +45,18 @@ Le système utilise plusieurs fichiers de données :
 - `data/ratings.csv` : Historique des notes attribuées
 - Modèles entraînés : `final_randomforest_model.pkl`
 
-## Préparation de l'environnement
+## Préparation de l'environnement (Windows)
 
 1. Créer un environnement virtuel
 
 ```bash
-py -m venv venv
+py -m venv .venv
 ```
 
 2. Activer l'environnement
 
 ```bash
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 3. Installer les dépendances
