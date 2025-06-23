@@ -171,14 +171,14 @@ def display_similar_movies_via_model(movie_id, model, item_features_df, movies_d
 
 def compare_ratings_with_recommendations_vectorized(
     user_id,
-    model,
-    user_features_df,
-    item_features_df,
-    user_scaler,
-    item_scaler,
-    y_scaler,
-    ratings_df,
-    movies_df,
+    model=data["model_DNN"],
+    user_features_df=data["user_features_df"],
+    item_features_df=data["item_features_df"],
+    user_scaler=data["user_scaler"],
+    item_scaler=data["movie_scaler"],
+    y_scaler=data["scalerTarget"],
+    ratings_df=data["ratings_df"],
+    movies_df=data["movie_df"],
     top_n=10,
 ):
     """
@@ -379,17 +379,3 @@ def compare_ratings_with_recommendations_vectorized(
 
     # Return the data for further analysis if needed
     return {"user_top_movies": user_top_movies, "recommendations": recommendations}
-
-
-results_54bis = compare_ratings_with_recommendations_vectorized(
-    user_id=54,
-    model=data["model_DNN"],
-    user_features_df=data["user_features_df"],
-    item_features_df=data["item_features_df"],
-    user_scaler=data["user_scaler"],
-    item_scaler=data["movie_scaler"],
-    y_scaler=data["scalerTarget"],
-    ratings_df=data["ratings_df"],
-    movies_df=data["movie_df"],
-    top_n=10,
-)

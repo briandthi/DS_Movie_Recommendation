@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Union
 
-from predict import predict_movie_rating
+from predict import predict_movie_rating, compare_ratings_with_recommendations_vectorized
 
 app = FastAPI(
     title="Film Rating Prediction API",
@@ -41,6 +41,33 @@ async def predict_rating(request: MovieRequest):
 async def health_check():
     """Endpoint pour vérifier que l'API est en ligne"""
     return {"status": "healthy"}
+
+@app.get("/compare_ratings_with_recommendations")
+async def compare_ratings_with_recommendations(user_id: int, n_recommendations: int = 10):
+    """
+    Compare les notes réelles d'un utilisateur avec les recommandations du modèle.
+
+    Args:
+        user_id (int): ID de l'utilisateur
+        n_recommendations (int): Nombre de recommandations à retourner
+
+    Returns:
+        dict: Contient les films les mieux notés par l'utilisateur et les recommandations du modèle
+    """
+    try:
+        result = compare_ratings_with_recommendations_vectorized(user_id, top_n=n_recommendations)
+        if result is None:
+            raise HTTPException(status_code=404, detail="Aucune donnée pour cet utilisateur.")
+        # Sérialisation des DataFrames
+        user_top_movies = result.get("user_top_movies")
+        recommendations = result.get("recommendations")
+        return {
+            "user_top_movies": user_top_movies.to_dict(orient="records") if user_top_movies is not None else [],
+            "recommendations": recommendations.to_dict(orient="records") if recommendations is not None else [],
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn
